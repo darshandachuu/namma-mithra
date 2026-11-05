@@ -1,0 +1,50 @@
+version: '3.8'
+
+services:
+  db:
+    image: mysql:8.0
+    container_name: campuscare_mysql
+    restart: always
+    environment:
+      MYSQL_DATABASE: campuscare
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_USER: campuscare_user
+      MYSQL_PASSWORD: campuscare_pass
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ../database/schema.sql:/docker-entrypoint-initdb.d/1_schema.sql
+      - ../database/seed_data.sql:/docker-entrypoint-initdb.d/2_seed.sql
+
+  backend:
+    build:
+      context: ..
+      dockerfile: deployment/Dockerfile.backend
+    container_name: campuscare_backend
+    restart: always
+    environment:
+      - DATABASE_URL=mysql+pymysql://campuscare_user:campuscare_pass@db:3306/campuscare
+      - SECRET_KEY=campuscare-prod-secret-2026
+      - JWT_SECRET_KEY=campuscare-jwt-secret-2026
+    ports:
+      - "5000:5000"
+    depends_on:
+      - db
+    volumes:
+      - backend_uploads:/app/uploads
+
+  frontend:
+    build:
+      context: ..
+      dockerfile: deployment/Dockerfile.frontend
+    container_name: campuscare_frontend
+    restart: always
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
+
+volumes:
+  mysql_data:
+  backend_uploads:
