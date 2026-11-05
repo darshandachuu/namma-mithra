@@ -4,6 +4,7 @@ import { ThumbsUp, MapPin, Tag, Calendar, Camera, ArrowRight } from 'lucide-reac
 import StatusBadge from './StatusBadge'
 import PriorityBadge from './PriorityBadge'
 import { formatRelative } from '../utils/formatDate'
+import { getFullImageUrl } from '../utils/imageUrl'
 
 const ComplaintCard = ({ complaint, onSupport, isSupporting = false }) => {
   const {
@@ -20,7 +21,7 @@ const ComplaintCard = ({ complaint, onSupport, isSupporting = false }) => {
     created_at
   } = complaint
 
-  const thumbnail = images && images.length > 0 ? images[0].image_url : null
+  const thumbnail = images && images.length > 0 ? getFullImageUrl(images[0].image_url) : null
 
   return (
     <div className="card h-100 border-0 shadow-sm overflow-hidden">

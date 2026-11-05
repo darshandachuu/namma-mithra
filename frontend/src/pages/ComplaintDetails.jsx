@@ -22,6 +22,7 @@ import StatusBadge from '../components/StatusBadge'
 import PriorityBadge from '../components/PriorityBadge'
 import ImagePreviewModal from '../components/ImagePreviewModal'
 import { formatDateTime, formatRelative } from '../utils/formatDate'
+import { getFullImageUrl } from '../utils/imageUrl'
 import { useAuth } from '../hooks/useAuth'
 import { toast } from 'react-toastify'
 
@@ -291,22 +292,25 @@ const ComplaintDetails = () => {
               </div>
             ) : (
               <div className="row g-2.5">
-                {complaint.images.map((img) => (
-                  <div key={img.id} className="col-6 col-sm-4 col-md-3">
-                    <div
-                      className="border rounded overflow-hidden shadow-sm position-relative cursor-pointer"
-                      style={{ height: '130px', cursor: 'pointer' }}
-                      onClick={() => setPreviewImage(img.image_url)}
-                      title="Click to view full image"
-                    >
-                      <img
-                        src={img.image_url}
-                        alt={img.file_name}
-                        style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                      />
+                {complaint.images.map((img) => {
+                  const resolvedUrl = getFullImageUrl(img.image_url)
+                  return (
+                    <div key={img.id} className="col-6 col-sm-4 col-md-3">
+                      <div
+                        className="border rounded overflow-hidden shadow-sm position-relative cursor-pointer"
+                        style={{ height: '130px', cursor: 'pointer' }}
+                        onClick={() => setPreviewImage(resolvedUrl)}
+                        title="Click to view full image"
+                      >
+                        <img
+                          src={resolvedUrl}
+                          alt={img.file_name}
+                          style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                        />
+                      </div>
                     </div>
-                  </div>
-                ))}
+                  )
+                })}
               </div>
             )}
           </div>

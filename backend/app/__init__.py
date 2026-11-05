@@ -23,7 +23,7 @@ def create_app(config_class=Config):
     db.init_app(flask_app)
     migrate.init_app(flask_app, db)
     jwt.init_app(flask_app)
-    cors.init_app(flask_app, resources={r"/api/*": {"origins": "*"}}, supports_credentials=True)
+    cors.init_app(flask_app, resources={r"/*": {"origins": "*"}}, supports_credentials=True)
 
     # Register Blueprints
     from app.routes.auth_routes import auth_bp
