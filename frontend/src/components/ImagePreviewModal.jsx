@@ -28,7 +28,7 @@ const ImagePreviewModal = ({ show, onHide, imageUrl, title = 'Complaint Photogra
         />
       </Modal.Body>
       <Modal.Footer className="py-2 justify-content-between">
-        <span className="text-muted small">CampusCare Upload Verification</span>
+        <span className="text-muted small">Namma Mithra Photo Verification</span>
         <div>
           <a
             href={fullUrl}
